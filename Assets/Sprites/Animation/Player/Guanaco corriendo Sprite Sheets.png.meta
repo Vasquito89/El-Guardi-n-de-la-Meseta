@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aa291be300318f541a947ba1482d6b3d
+guid: 186ec31b502848d49b6bcbc8560ffffc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,14 +43,14 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 150
-  spriteBorder: {x: 175, y: 178, z: 174, w: 120}
-  spriteGenerateFallbackPhysicsShape: 0
+  spritePixelsToUnits: 40
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -108,18 +108,106 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Guanaco corriendo Sprite Sheets_0
+      rect:
+        serializedVersion: 2
+        x: 23
+        y: 478
+        width: 310
+        height: 258
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38c17b377b2078649ab9e01788cf386c
+      internalID: -1702761043
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guanaco corriendo Sprite Sheets_1
+      rect:
+        serializedVersion: 2
+        x: 394
+        y: 465
+        width: 334
+        height: 271
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb88af9aef35dd84a9ed132428f02474
+      internalID: -243206766
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guanaco corriendo Sprite Sheets_2
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 83
+        width: 284
+        height: 253
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63993cb69a283f94286c9b24f8a855d7
+      internalID: -692954086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Guanaco corriendo Sprite Sheets_3
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 86
+        width: 355
+        height: 259
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 432b4fabb02bea5449fd012f641b8667
+      internalID: 1979930189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Guanaco corriendo Sprite Sheets_0: -1702761043
+      Guanaco corriendo Sprite Sheets_1: -243206766
+      Guanaco corriendo Sprite Sheets_2: -692954086
+      Guanaco corriendo Sprite Sheets_3: 1979930189
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
