@@ -17,7 +17,7 @@ public class GuanacoController : MonoBehaviour,IDamageable
     [Header("Disparo")]
     [SerializeField] private GameObject salivaPrefab;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private float attackDamage = 15f;
+    //[SerializeField] private float attackDamage = 15f;
 
     // Variables para la UI (El GameManager leerá estas)
     public float lifeGuanaco = 100f;
@@ -30,7 +30,10 @@ public class GuanacoController : MonoBehaviour,IDamageable
     private bool isGrounded;
     private bool facingRight = true;
     private float horizontalInput;
+    private float verticalInput;
     private EnemyBase currentEnemy;
+    private bool isAttacking = false;
+    private bool isEating = false;
 
     void Awake()
     {
@@ -49,20 +52,20 @@ public class GuanacoController : MonoBehaviour,IDamageable
     {
         // Leer input de flechas o WASD
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
+
 
         // ENVIAR DATOS AL ANIMATOR
         // Usamos Mathf.Abs para que el valor siempre sea positivo (1 si vas a derecha o izquierda)
-        // El parámetro en Unity debe llamarse "velocidadHorizontal"
         if (animator != null)
         {
             animator.SetFloat("velocidadHorizontal", Mathf.Abs(horizontalInput));
+            // Enviamos el valor vertical para que el Blend Tree detecte el -1 (Abajo)
+            animator.SetFloat("velocidadVertical", verticalInput);
         }
 
-        // Saltar si presiona Espacio y está tocando el suelo
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        }
+        // 3. Bloqueo de acciones si está comiendo
+        if (isEating) return;
 
         // 4. Atacar (Flecha Arriba)
         if (Input.GetKeyDown(KeyCode.UpArrow) && currentAmmo > 0)
@@ -124,15 +127,6 @@ public class GuanacoController : MonoBehaviour,IDamageable
         Die();
     }
 
-
-    private void Eat()
-    {
-        lifeGuanaco += 20f;
-        currentAmmo += 5;
-        Destroy(currentFood);
-        isOnFood = false;
-    }
-
     private void PerformAttack()
     {
         // 1. Chequeo de munición primero
@@ -163,21 +157,28 @@ public class GuanacoController : MonoBehaviour,IDamageable
         Debug.Log("Munición restante: " + currentAmmo);
 
         // 6. Animación (Opcional si tenés el Trigger)
-        if (animator != null) animator.SetTrigger("attack");
+
+        isAttacking = true;
+        if (animator != null)
+            //animator.SetTrigger("attack");
+            animator.SetBool("isAttacking", isAttacking);
     }
+
 
     IEnumerator PerformEat()
     {
-        animator.SetTrigger("eat"); // Activa animación de comer
+        isEating = true;
 
-        // Esperamos un momento para que la animación coincida con la recuperación
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f); // Tiempo de la animación
 
-        lifeGuanaco = Mathf.Min(lifeGuanaco + 20f, 100f); // No cura más de 100
+        // Lógica de recuperación
+        lifeGuanaco = Mathf.Min(lifeGuanaco + 20f, 100f);
         currentAmmo += 5;
 
         if (currentFood != null) Destroy(currentFood);
+
         isOnFood = false;
+        isEating = false; // Importante resetear para volver a moverse
     }
     private void Die()
     {

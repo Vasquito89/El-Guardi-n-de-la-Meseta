@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         UpdatePlayerUI();
         UpdateEnemyUI();
@@ -133,11 +133,13 @@ public class GameManager : MonoBehaviour
             winPanel.SetActive(true);
             gameOverPanel.SetActive(false);
             UIPanel.SetActive(false);
+
              Time.timeScale = 0f; // Pausa el juego
         }
 
-        else if (playerController.lifeGuanaco <= 0)
+        else if (playerController.lifeGuanaco <= 0 && Time.timeSinceLevelLoad > 2f)
         {
+            
             UIPanel.SetActive(false);
             scene.SetActive(false);
             player.SetActive(false);
