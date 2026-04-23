@@ -2,16 +2,24 @@ using UnityEngine;
 
 public class FoxController : EnemyBase
 {
-    private GuanacoController playerController;
     protected override void Attack()
     {
+        playerController.TakeDamage(10f);
+        Debug.Log("Hare attacked the player!");
+        Debug.Log($"Player's remaining life: {playerController.lifeGuanaco}");
         animator.SetBool("isWalking", false);
         animator.SetBool("isAttacking", true);
         rb.velocity = Vector2.zero;
         soundController.StopWalk();
         soundController.PlayAction(); // The shooting sound
-        playerController.TakeDamage(20f);
-        Debug.Log("Hare attacked the player!");
-        Debug.Log($"Player's remaining life: {playerController.lifeGuanaco}");
+        
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerController.TakeDamage(25f);
+        }
     }
 }

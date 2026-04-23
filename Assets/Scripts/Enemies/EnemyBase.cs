@@ -15,6 +15,7 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
     protected SpriteRenderer spriteRenderer;
     protected Rigidbody2D rb;
     protected SoundEnemyController soundController;
+    protected GuanacoController playerController;
 
 
     protected virtual void Start()
@@ -24,6 +25,9 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
         soundController = GetComponentInChildren<SoundEnemyController>();
         rb = GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
+        playerController = FindObjectOfType<GuanacoController>();
+        if (playerController == null)
+            Debug.LogError($"¡Atención! {gameObject.name} no encontró al GuanacoController.");
 
         // Disable enemy until the LevelManager activates it
         //gameObject.SetActive(false);

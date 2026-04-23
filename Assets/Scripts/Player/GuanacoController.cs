@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GuanacoController : MonoBehaviour,IDamageable
@@ -118,17 +119,13 @@ public class GuanacoController : MonoBehaviour,IDamageable
     public void TakeDamage(float amount)
     {
         lifeGuanaco -= amount;
+
         if (lifeGuanaco <= 0) Debug.Log("Game Over");
         Die();
     }
 
-    void Shoot()
-    {
-        GameObject bullet = Instantiate(salivaPrefab, firePoint.position, firePoint.rotation);
-        bullet.GetComponent<Projectile>().targetTag = "Player"; // If it's an enemy shooting
-    }
 
-    void Eat()
+    private void Eat()
     {
         lifeGuanaco += 20f;
         currentAmmo += 5;
@@ -136,29 +133,37 @@ public class GuanacoController : MonoBehaviour,IDamageable
         isOnFood = false;
     }
 
-    void PerformAttack()
+    private void PerformAttack()
     {
-        // 1. Obtener la posición del mouse en el mundo (convertir de píxeles de pantalla a coordenadas del juego)
+        // 1. Chequeo de munición primero
+        if (currentAmmo <= 0)
+        {
+            Debug.Log("¡Sin munición!");
+            return;
+        }
+
+        // 2. Lógica del Mouse (Apuntado)
         Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = 0; // Nos aseguramos de estar en el plano 2D
-
-        // 2. Calcular la dirección desde la boca (firePoint) hacia el mouse
+        mousePosition.z = 0;
         Vector2 direction = (mousePosition - firePoint.position).normalized;
-
-        // 3. Calcular el ángulo para que el sprite de la saliva "mire" al objetivo
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        // 4. Instanciar la saliva con esa rotación
+        // 3. Instanciar la saliva
         GameObject bullet = Instantiate(salivaPrefab, firePoint.position, Quaternion.Euler(0, 0, angle));
 
-        // 5. Configurar el proyectil (Asegúrate de que tu script Projectile use esta dirección)
+        // 4. Configurar Proyectil
         Projectile proj = bullet.GetComponent<Projectile>();
         if (proj != null)
         {
-            proj.targetTag = "Enemy"; // El Guanaco ataca enemigos
-                                      // Le pasamos la dirección calculada si tu script Projectile lo permite
+            proj.targetTag = "Enemy"; // El Guanaco daña enemigos
         }
-        currentEnemy.TakeDamage(attackDamage); // Si quieres aplicar daño directo al enemigo al disparar
+
+        // 5. RESTAR MUNICIÓN (Vital para la UI)
+        currentAmmo--;
+        Debug.Log("Munición restante: " + currentAmmo);
+
+        // 6. Animación (Opcional si tenés el Trigger)
+        if (animator != null) animator.SetTrigger("attack");
     }
 
     IEnumerator PerformEat()
@@ -179,11 +184,5 @@ public class GuanacoController : MonoBehaviour,IDamageable
         animator.SetTrigger("die"); // Activa la animación de muerte
         this.enabled = false; // Desactiva este script para que no puedas moverte
         rb.velocity = Vector2.zero; // Detiene al Guanaco
-
-        // Aquí puedes llamar al GameManager para mostrar el panel de derrota
-        //FindObjectOfType<GameManager>().ShowDefeat();
     }
-
-
-
 }

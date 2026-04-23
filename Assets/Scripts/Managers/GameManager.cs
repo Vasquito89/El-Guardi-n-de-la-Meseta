@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject UIPanel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private GameObject winPanel;
+    [SerializeField] private Button restartButtonWin;
+    [SerializeField] private Button mainMenuButtonWin;
+    [SerializeField] private Button restartButtonGO;
+    [SerializeField] private Button mainMenuButtonGO;
 
     [Header("Player")]
     [SerializeField] private TextMeshProUGUI ammoText;
@@ -50,13 +55,16 @@ public class GameManager : MonoBehaviour
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        playerController = player.GetComponent<GuanacoController>();
+        playerController = Object.FindFirstObjectByType<GuanacoController>();
 
         UIPanel.SetActive(true);
         gameOverPanel.SetActive(false);
         winPanel.SetActive(false);
 
-        
+        restartButtonWin.onClick.AddListener(RestartGame);
+        mainMenuButtonWin.onClick.AddListener(ReturnToMainMenu);
+        restartButtonGO.onClick.AddListener(RestartGame);
+        mainMenuButtonGO.onClick.AddListener(ReturnToMainMenu);
     }
 
     // Update is called once per frame
@@ -93,7 +101,7 @@ public class GameManager : MonoBehaviour
     {
         // Aquí podrías buscar cuántos objetos con tag "Enemy" quedan
         int count = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        enemiesLeftText.text = "Enemigos Restantes: " + count;
+        enemiesLeftText.text = "Enemigos : " + count;
 
         // Lógica para detectar al enemigo más cercano o activo y mostrar su vida
         // (Por ahora, si dejas a todos activos, esto mostrará la del que encuentres)
@@ -109,9 +117,26 @@ public class GameManager : MonoBehaviour
     void CheckGameStatus()
     {
         // Agregamos una validación de seguridad: solo verificar si ha pasado un instante
-        if (Time.timeSinceLevelLoad < 10f) return;
+        if (Time.timeSinceLevelLoad < 0.1f) return;
 
-        if (playerController != null && playerController.lifeGuanaco <= 0)
+        // Si no quedan enemigos
+        int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        if (Time.timeSinceLevelLoad > 0.5f && enemyCount == 0 & playerController.lifeGuanaco > 0)
+        {
+            scene.SetActive(false);
+            player.SetActive(false);
+            enemy1.SetActive(false);
+            enemy2.SetActive(false);
+            enemy3.SetActive(false);
+            enemy4.SetActive(false);
+            tumbleweed.SetActive(false);
+            winPanel.SetActive(true);
+            gameOverPanel.SetActive(false);
+            UIPanel.SetActive(false);
+             Time.timeScale = 0f; // Pausa el juego
+        }
+
+        else if (playerController.lifeGuanaco <= 0)
         {
             UIPanel.SetActive(false);
             scene.SetActive(false);
@@ -122,22 +147,24 @@ public class GameManager : MonoBehaviour
             enemy4.SetActive(false);
             tumbleweed.SetActive(false);
             gameOverPanel.SetActive(true);
+            winPanel.SetActive(false);
+            UIPanel.SetActive(false);
             Time.timeScale = 0f; // Pausa el juego
         }
 
-        // Si no quedan enemigos
-        int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        if (Time.timeSinceLevelLoad > 0.5f && enemyCount == 0)
-        {
-            scene.SetActive(false);
-            player.SetActive(false);
-            enemy1.SetActive(false);
-            enemy2.SetActive(false);
-            enemy3.SetActive(false);
-            enemy4.SetActive(false);
-            tumbleweed.SetActive(false);
-            winPanel.SetActive(true);
-        }
+        
+    }
+
+    private void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Nivel1");
+    }
+
+    private void ReturnToMainMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MenuPrincipal");
     }
 
 }
