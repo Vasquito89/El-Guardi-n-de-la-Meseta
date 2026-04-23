@@ -529,9 +529,9 @@ RectTransform:
   - {fileID: 1400188522}
   m_Father: {fileID: 479110934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 102.87385, y: -15}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 205.7477, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &746759791
@@ -650,9 +650,9 @@ RectTransform:
   - {fileID: 694911515}
   m_Father: {fileID: 479110934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 102.87385, y: -75}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 205.7477, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &818856921
@@ -1191,11 +1191,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playlist:
-  - {fileID: 8300000, guid: 3da4271d6ea551a4f98690f628db0e40, type: 3}
-  - {fileID: 8300000, guid: 720218fd733514944ab28db05ecfb5a3, type: 3}
-  - {fileID: 8300000, guid: d83fc95a4b67c5846b28d1595a721f12, type: 3}
-  - {fileID: 8300000, guid: a3e4357318603c64e93c37caa135bc0b, type: 3}
-  - {fileID: 8300000, guid: a575d40cd5b9888418c46845990e70a4, type: 3}
+  - {fileID: 8300000, guid: c38387bad41d4da4c87c7d2e26f2a806, type: 3}
+  - {fileID: 8300000, guid: 508835b2d31d25945bcbbc2820038f45, type: 3}
   indiceActual: 0
   aleatorio: 1
   isPausedByScene: 0
@@ -1359,9 +1356,9 @@ RectTransform:
   - {fileID: 1025086453}
   m_Father: {fileID: 479110934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 102.87385, y: -45}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 205.7477, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1362959520
@@ -1823,9 +1820,9 @@ RectTransform:
   - {fileID: 1429476532}
   m_Father: {fileID: 479110934}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 102.87385, y: -105}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 205.7477, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1688869692
