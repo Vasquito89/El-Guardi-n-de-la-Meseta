@@ -4,7 +4,7 @@ public class FoxController : EnemyBase
 {
     protected override void Attack()
     {
-        playerController.TakeDamage(10f);
+        //playerController.TakeDamage(10f);
         Debug.Log("Hare attacked the player!");
         Debug.Log($"Player's remaining life: {playerController.lifeGuanaco}");
         animator.SetBool("isWalking", false);
@@ -15,11 +15,11 @@ public class FoxController : EnemyBase
         
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
-            playerController.TakeDamage(25f);
+            playerController.TakeDamage(15f);
         }
     }
 }

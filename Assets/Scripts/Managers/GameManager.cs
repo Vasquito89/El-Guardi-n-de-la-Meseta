@@ -114,47 +114,44 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void CheckGameStatus()
+    public void CheckGameStatus()
     {
         // Agregamos una validación de seguridad: solo verificar si ha pasado un instante
         if (Time.timeSinceLevelLoad < 0.1f) return;
 
         // Si no quedan enemigos
         int enemyCount = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        if (Time.timeSinceLevelLoad > 0.5f && enemyCount == 0 & playerController.lifeGuanaco > 0)
+        // 2. CONDICIÓN DE VICTORIA
+        // Si no hay enemigos y el jugador sigue vivo
+        if (enemyCount == 0 && playerController.lifeGuanaco > 0)
         {
-            scene.SetActive(false);
-            player.SetActive(false);
-            enemy1.SetActive(false);
-            enemy2.SetActive(false);
-            enemy3.SetActive(false);
-            enemy4.SetActive(false);
-            tumbleweed.SetActive(false);
-            winPanel.SetActive(true);
-            gameOverPanel.SetActive(false);
-            UIPanel.SetActive(false);
-
-             Time.timeScale = 0f; // Pausa el juego
+            WinGame();
         }
-
-        else if (playerController.lifeGuanaco <= 0 && Time.timeSinceLevelLoad > 2f)
+        // 3. CONDICIÓN DE DERROTA
+        else if (playerController.lifeGuanaco <= 0)
         {
-            
-            UIPanel.SetActive(false);
-            scene.SetActive(false);
-            player.SetActive(false);
-            enemy1.SetActive(false);
-            enemy2.SetActive(false);
-            enemy3.SetActive(false);
-            enemy4.SetActive(false);
-            tumbleweed.SetActive(false);
-            gameOverPanel.SetActive(true);
-            winPanel.SetActive(false);
-            UIPanel.SetActive(false);
-            Time.timeScale = 0f; // Pausa el juego
+            GameOver();
         }
+    }
 
-        
+    private void WinGame()
+    {
+        // NO desactives 'scene', por eso ves azul. 
+        // Solo muestra el panel de victoria.
+        winPanel.SetActive(true);
+        UIPanel.SetActive(false);
+
+        // Opcional: Desactivar solo el movimiento del jugador
+        playerController.enabled = false;
+
+        Time.timeScale = 0f; // Pausa el juego para que nada se mueva atrás
+    }
+
+    private void GameOver()
+    {
+        gameOverPanel.SetActive(true);
+        UIPanel.SetActive(false);
+        Time.timeScale = 0f;
     }
 
     private void RestartGame()

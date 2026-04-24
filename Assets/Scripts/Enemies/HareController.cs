@@ -14,9 +14,9 @@ public class HareController : EnemyBase
         
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             playerController.TakeDamage(5f); // Damage to the player on collision
             Debug.Log("Hare attacked the player!");

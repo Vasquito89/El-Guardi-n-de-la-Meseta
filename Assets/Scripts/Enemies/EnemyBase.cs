@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public abstract class EnemyBase : MonoBehaviour , IDamageable
@@ -8,6 +9,8 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
     [SerializeField] protected float detectionRange = 10f;
     [SerializeField] protected float attackRange = 2f;
     public float health = 50f;
+    [SerializeField] protected float attackRate = 1.5f; // Tiempo entre ataques (ajusta según tu sonido)
+    private float nextAttackTime = 0f; // Marcador de tiempo para el siguiente ataque
 
     //public int lifeEnemy { get; set; }
 
@@ -16,6 +19,7 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
     protected Rigidbody2D rb;
     protected SoundEnemyController soundController;
     protected GuanacoController playerController;
+    protected GameManager gameManager;
 
 
     protected virtual void Start()
@@ -28,6 +32,8 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
         playerController = FindObjectOfType<GuanacoController>();
         if (playerController == null)
             Debug.LogError($"¡Atención! {gameObject.name} no encontró al GuanacoController.");
+        gameManager = FindObjectOfType<GameManager>();
+
 
         // Disable enemy until the LevelManager activates it
         //gameObject.SetActive(false);
@@ -41,7 +47,16 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
 
         if (distance <= attackRange)
         {
-            Attack();
+            if (Time.time >= nextAttackTime)
+            {
+                Attack();
+                nextAttackTime = Time.time + attackRate; // Actualiza el tiempo para el próximo ataque
+            }
+            else
+            {
+                // Mientras espera el cooldown, que se quede quieto
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
         }
         else if (distance <= detectionRange)
         {
@@ -83,7 +98,23 @@ public abstract class EnemyBase : MonoBehaviour , IDamageable
         rb.velocity = Vector2.zero; //
         GetComponent<Collider2D>().enabled = false;
 
-        // Logic for death (animations, disable object, etc.)
-        gameObject.SetActive(false);
+        StartCoroutine(DestroyAfterAnimation());
+    }
+
+    IEnumerator DestroyAfterAnimation()
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(gameObject);
+        if (gameManager != null)
+        {
+            // Pasamos un pequeño delay o llamamos después de destruir
+            Destroy(gameObject);
+            // Usamos Invoke para dar un frame de margen a que Unity limpie la lista de objetos
+            gameManager.Invoke("CheckGameStatus", 0.1f);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 }

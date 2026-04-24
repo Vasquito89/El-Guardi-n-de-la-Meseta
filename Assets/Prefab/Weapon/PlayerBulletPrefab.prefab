@@ -136,3 +136,4 @@ MonoBehaviour:
   damage: 20
   speed: 10
   targetTag: Enemy
+  lifeTime: 2

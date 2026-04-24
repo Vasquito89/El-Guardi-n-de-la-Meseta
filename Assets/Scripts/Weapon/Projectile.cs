@@ -2,26 +2,34 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float damage = 10f;
-    public float speed = 10f;
-    public string targetTag; // "Enemy" for Guanaco, "Player" for Hunter
+    [Header("Ajustes de Combate")]
+    [SerializeField] private float damage = 10f;
+    [SerializeField] private float speed = 10f;
+    public string targetTag; // "Enemy" para Guanaco, "Player" para Hunter
+
+    [Header("Optimización")]
+    [SerializeField] private float lifeTime = 2f;
+
+    void Start()
+    {       
+        Destroy(gameObject, lifeTime); // Esta función programa la destrucción del objeto apenas aparece en escena
+    }
 
     void Update()
     {
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        transform.Translate(transform.right * speed * Time.deltaTime, Space.World);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(targetTag))
         {
-            // Here is the magic: we check if it's IDamageable
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null)
             {
                 damageable.TakeDamage(damage);
             }
-            Destroy(gameObject); // The projectile disappears
+            Destroy(gameObject); 
         }
     }
 }

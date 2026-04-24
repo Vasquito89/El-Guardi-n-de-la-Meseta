@@ -7,7 +7,7 @@ public class GuanacoController : MonoBehaviour,IDamageable
 {
     [Header("Movimiento")]
     [SerializeField] private float moveSpeed = 8f;
-    [SerializeField] private float jumpForce = 12f;
+    //[SerializeField] private float jumpForce = 12f;
 
     [Header("Detección de Suelo")]
     [SerializeField] private Transform groundCheck;
@@ -27,6 +27,7 @@ public class GuanacoController : MonoBehaviour,IDamageable
     private GameObject currentFood;
     private Animator animator;
     private Rigidbody2D rb;
+    private AudioSource guanacoAudioSource;
     private bool isGrounded;
     private bool facingRight = true;
     private float horizontalInput;
@@ -45,7 +46,9 @@ public class GuanacoController : MonoBehaviour,IDamageable
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponentInChildren<Animator>();
-        
+        guanacoAudioSource = GetComponentInChildren<AudioSource>();
+
+
     }
 
     void Update()
@@ -83,6 +86,8 @@ public class GuanacoController : MonoBehaviour,IDamageable
         if (horizontalInput > 0 && !facingRight) Spin();
         else if (horizontalInput < 0 && facingRight) Spin();
 
+        HandleMovementSound();
+
     }
 
     void FixedUpdate()
@@ -92,6 +97,8 @@ public class GuanacoController : MonoBehaviour,IDamageable
 
         // Detectar si toca el suelo usando un círculo invisible
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
+
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -113,6 +120,26 @@ public class GuanacoController : MonoBehaviour,IDamageable
         }
     }
 
+    private void HandleMovementSound()
+    {
+        if (guanacoAudioSource == null) return;
+
+        // Si el jugador se está moviendo horizontalmente
+        if (Mathf.Abs(horizontalInput) > 0.1f)
+        {
+            // Si el sonido NO se está reproduciendo, le damos Play
+            if (!guanacoAudioSource.isPlaying)
+            {
+                guanacoAudioSource.Play();
+            }
+        }
+        else
+        {
+            // Si deja de moverse, detenemos el sonido
+            guanacoAudioSource.Stop();
+        }
+    }
+
     void Spin()
     {
         facingRight = !facingRight;
@@ -123,8 +150,8 @@ public class GuanacoController : MonoBehaviour,IDamageable
     {
         lifeGuanaco -= amount;
 
-        if (lifeGuanaco <= 0) Debug.Log("Game Over");
-        Die();
+        if (lifeGuanaco <= 0) Die(); Debug.Log("Game Over");
+     
     }
 
     private void PerformAttack()
@@ -172,7 +199,8 @@ public class GuanacoController : MonoBehaviour,IDamageable
         yield return new WaitForSeconds(0.5f); // Tiempo de la animación
 
         // Lógica de recuperación
-        lifeGuanaco = Mathf.Min(lifeGuanaco + 20f, 100f);
+        //lifeGuanaco = Mathf.Min(lifeGuanaco + 20f, 100f);
+        lifeGuanaco+= 20f;
         currentAmmo += 5;
 
         if (currentFood != null) Destroy(currentFood);
@@ -182,8 +210,17 @@ public class GuanacoController : MonoBehaviour,IDamageable
     }
     private void Die()
     {
-        animator.SetTrigger("die"); // Activa la animación de muerte
-        this.enabled = false; // Desactiva este script para que no puedas moverte
-        rb.velocity = Vector2.zero; // Detiene al Guanaco
+        
+        
+            if (animator != null)
+            {
+                animator.SetLayerWeight(1, 1f);
+                animator.SetTrigger("die"); // Activa la animación de muerte           
+            }
+
+            this.enabled = false; // Desactiva este script para que no puedas moverte
+            rb.velocity = Vector2.zero; // Detiene al Guanaco
+        
+        
     }
 }

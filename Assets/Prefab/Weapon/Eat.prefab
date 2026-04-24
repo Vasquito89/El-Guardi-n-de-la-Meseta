@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5331475345139750769}
   - component: {fileID: 2912941395422501107}
   - component: {fileID: 5523461129734283800}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: Eat
   m_TagString: Corrion
   m_Icon: {fileID: 0}

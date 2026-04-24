@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class HunterController : EnemyBase
@@ -5,6 +6,7 @@ public class HunterController : EnemyBase
     [Header("Shooting")]
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private Transform firePoint;
+
     protected override void Attack()
     {
         animator.SetBool("isWalking", false);
